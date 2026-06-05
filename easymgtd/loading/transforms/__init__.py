@@ -12,3 +12,8 @@ from . import narrativeqa
 from . import aitextdetect_binary
 from . import aitextdetect_attribution
 from . import aitextdetect_incremental
+from . import gpt2output
+from . import HC3
+from . import HC3plus
+from . import M4
+from . import MAGE
