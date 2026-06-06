@@ -6,6 +6,8 @@ Raw data format (jsonl):
     - label: int
 
 Output: list[BinarySample]
+
+Default path for dataset: DATASET_DIR_OTHERS/HC3plus/en  or  DATASET_DIR_OTHERS/HC3plus/zh
 """
 
 import os
@@ -14,7 +16,7 @@ from pathlib import Path
 from ..registry import DatasetRegistry, DatasetTransform
 from ..schemas import BinarySample
 from ..readers import read_jsonl
-from ..constants import DATASET_DIR_OTHERS, HC3_PLUS_EN_DIRECTORY
+from ..constants import DATASET_DIR_OTHERS
 
 
 def _process_file(file_path: Path) -> list[BinarySample]:
@@ -73,11 +75,13 @@ class HC3plusTransform(DatasetTransform):
 
         # If raw_data is not provided, read from files
         if not raw_data:
-            # directory = HC3_PLUS_EN_DIRECTORY
             directory = kwargs.get("path") or os.path.join(
                 DATASET_DIR_OTHERS, "HC3plus/en"
             )
             directory = Path(directory)
+
+            if not directory.exists():
+                raise FileNotFoundError(f"Directory not found: {directory}")
             # Find all JSONL files
             jsonl_files = list(directory.glob("*.jsonl"))
             for file_path in jsonl_files:

@@ -11,11 +11,13 @@ File naming pattern:
     - {model_name}-k40.{split}.jsonl: GPT-2 generated text with Top-K 40 truncation
 
 Each line in the JSONL file is a JSON object with a 'text' field.
+
+Default path for dataset: DATASET_DIR_OTHERS/GPT2Output
 """
 import os
 from pathlib import Path
 
-from ..constants import GPT2Output_DATASET_DIRECTORY, DATASET_DIR_OTHERS
+from ..constants import DATASET_DIR_OTHERS
 from ..registry import DatasetRegistry, DatasetTransform
 from ..schemas import MultiClassSample
 from ..readers import read_jsonl
@@ -76,7 +78,7 @@ def _extract_model_info(file_path: Path) -> tuple:
 
     return model_name, split
 
-def _scan_dataset_files() -> list[dict[str, any]]:
+def _scan_dataset_files(dir_path: str) -> list[dict[str, any]]:
     """
     Scan the dataset directory for all JSONL files.
 
@@ -84,7 +86,11 @@ def _scan_dataset_files() -> list[dict[str, any]]:
         List of dictionaries with keys: 'path', 'model_name', 'split', 'label', 'category'
     """
     file_info_list = []
-    directory = os.path.join(DATASET_DIR_OTHERS, "GPT2Output") or GPT2Output_DATASET_DIRECTORY
+    directory = dir_path or os.path.join(DATASET_DIR_OTHERS, "GPT2Output")
+    directory = Path(directory)
+
+    if not directory.exists():
+        raise FileNotFoundError(f"Directory not found: {directory}")
 
     for file_path in directory.glob("*.jsonl"):
         model_name, split = _extract_model_info(file_path)
@@ -131,7 +137,7 @@ class GPT2OutputTransform(DatasetTransform):
         # If raw_data is not provided, read from files
         if not raw_data:
 
-            file_info_list = _scan_dataset_files()
+            file_info_list = _scan_dataset_files(kwargs.get("path"))
 
             for file_info in file_info_list:
                 file_path = file_info["path"]

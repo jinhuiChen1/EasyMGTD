@@ -15,6 +15,8 @@ Data format (jsonline):
 Output: MultiClassSample instances with labels:
     - 0: human-written text
     - 1+: model-generated text (distinct labels for different models)
+
+Default path for dataset: DATASET_DIR_OTHERS/M4
 """
 
 import os
@@ -24,7 +26,7 @@ from typing import Union
 from ..registry import DatasetRegistry, DatasetTransform
 from ..schemas import MultiClassSample
 from ..readers import read_jsonl
-from ..constants import DATASET_DIR_OTHERS, M4_DIRECTORY
+from ..constants import DATASET_DIR_OTHERS
 
 # Map model names to integer labels. Starting from 1 to leave 0 for human text.
 MODEL_TO_LABEL = {
@@ -161,11 +163,13 @@ class M4Transform(DatasetTransform):
 
         # If raw_data is not provided, read from files
         if not raw_data:
-            # directory = M4_DIRECTORY
             directory = kwargs.get("path") or os.path.join(
                 DATASET_DIR_OTHERS, "M4"
             )
             directory = Path(directory)
+
+            if not directory.exists():
+                raise FileNotFoundError(f"Directory not found: {directory}")
             # Find all JSONL files
             jsonl_files = list(directory.glob("*.jsonl"))
 

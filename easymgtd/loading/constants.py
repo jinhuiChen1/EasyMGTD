@@ -15,18 +15,11 @@ DATASET_AITextDetect = os.getenv("DATASET_AITextDetect", "AITextDetect/AI_Polish
 DATASET_DIR_OTHERS = os.getenv("DATASET_DIR_OTHERS", "datasets")
 SAVED_DATA_DIR = os.getenv("DATASET_DIR_SAVE", "exp_data")
 
-GPT2Output_DATASET_DIRECTORY = os.getenv("GPT2Output_DATASET_DIRECTORY", "D:\mypyhthonworkspace\gpt-2-output-dataset-master\data")    # Default: datasets/GPT2Output
-HC3_EN_DIRECTORY = os.getenv("HC3_EN_DIRECTORY", "D:\mypyhthonworkspace\pythonProject1\HC3_EN")    # Default: datasets/HC3_EN
-HC3_ZH_DIRECTORY = os.getenv("HC3_ZH_DIRECTORY", "D:\mypyhthonworkspace\pythonProject1\HC3_CH")    # Default: datasets/HC3_ZH
-HC3_PLUS_EN_DIRECTORY = os.getenv("HC3_PLUS_EN_DIRECTORY", "D:\mypyhthonworkspace\chatgpt-comparison-detection-HC3-Plus-main\data\en")    # Default: datasets/HC3plus/en
-HC3_PLUS_CH_DIRECTORY = os.getenv("HC3_PLUS_CH_DIRECTORY", "D:\mypyhthonworkspace\chatgpt-comparison-detection-HC3-Plus-main\data\zh")    # Default: datasets/HC3plus/zh
-M4_DIRECTORY = os.getenv("M4_DIRECTORY", "D:\mypyhthonworkspace\M4-main\data")    # Default: datasets/M4
-MAGE_DIRECTORY = os.getenv("MAGE_DIRECTORY", "D:\mypyhthonworkspace\MAGE")    # Default: datasets/MAGE
 # ==============================================================================
 # Dataset and model lists
 # ==============================================================================
 
-DATASETS = ["TruthfulQA", "SQuAD1", "NarrativeQA"]
+DATASETS = ["TruthfulQA", "SQuAD1", "NarrativeQA"] # , "GPT2Output", "HC3", "HC3plus", "M4", "MAGE"
 
 MODELS = ["Moonshot", "gpt35", "Mixtral", "Llama3", "gpt-4omini"]
 

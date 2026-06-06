@@ -7,6 +7,8 @@ Raw data format (jsonl):
     - chatgpt_answers: list[str] (ChatGPT-generated answers, typically one, but can be multiple)
 
 Output: list[BinarySample]
+
+Default path for dataset: DATASET_DIR_OTHERS/HC3_EN  or  DATASET_DIR_OTHERS/HC3_ZH
 """
 
 import os
@@ -15,7 +17,7 @@ from pathlib import Path
 from ..registry import DatasetRegistry, DatasetTransform
 from ..schemas import BinarySample
 from ..readers import read_jsonl
-from ..constants import DATASET_DIR_OTHERS, HC3_EN_DIRECTORY
+from ..constants import DATASET_DIR_OTHERS
 
 LABEL_MAPPING = {
     "human": 0,
@@ -117,11 +119,14 @@ class HC3Transform(DatasetTransform):
 
         # If raw_data is not provided, read from files
         if not raw_data:
-            # directory = HC3_EN_DIRECTORY
             directory = kwargs.get("path") or os.path.join(
                 DATASET_DIR_OTHERS, "HC3_EN"
             )
             directory = Path(directory)
+
+            if not directory.exists():
+                raise FileNotFoundError(f"Directory not found: {directory}")
+
             # Find all JSONL files
             jsonl_files = list(directory.glob("*.jsonl"))
             for file_path in jsonl_files:
@@ -144,6 +149,3 @@ class HC3Transform(DatasetTransform):
                         all_samples.append(sample)
 
         return all_samples
-
-
-
